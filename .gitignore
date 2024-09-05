@@ -1,0 +1,8 @@
+/Backend/UserService/.idea
+/Backend/UserService/UserService.Domain/bin
+/Backend/UserService/UserService.Domain/obj
+/Backend/UserService/UserService.Host/bin
+/Backend/UserService/UserService.Host/obj
+/Backend/UserService/UserService.Infrastructure/bin
+/Backend/UserService/UserService.Infrastructure/obj
+/.git
