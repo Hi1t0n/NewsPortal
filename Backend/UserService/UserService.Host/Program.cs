@@ -1,3 +1,6 @@
+using FluentValidation;
+using UserService.Domain.Validators;
+using UserService.Host.Routes;
 using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddBusinessLogic(builder.Configuration.GetConnectionString("PostgreSQL"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserAddRequestValidator));
 
 var app = builder.Build();
 
@@ -18,5 +23,7 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+app.AddUserRouters();
 
 app.Run();
