@@ -13,6 +13,8 @@ public static class UserRoutes
         userGroup.MapPost(pattern: "/", handler: AddUser);
         userGroup.MapGet(pattern:"/", handler: GetUsers);
         userGroup.MapGet(pattern:"/{id:guid}", handler: GetUserById);
+        userGroup.MapPut(pattern: "/{id:guid}", handler: UpdateUserById);
+        userGroup.MapDelete(pattern: "/{id:guid}", handler: DeleteUserById);
         return application;
     }
 
@@ -49,5 +51,30 @@ public static class UserRoutes
         return Results.Ok(user);
     }
 
+    public static async Task<IResult> UpdateUserById(UserUpdateRequest request, IUserService userService,
+        UserUpdateRequestValidator validator, CancellationToken cancellationToken)
+    {
+        var result = await validator.ValidateAsync(request);
+        
+        if (!result.IsValid)
+        {
+            return Results.BadRequest(result.Errors);
+        }
+        
+        var user = await userService.UpdateUserByIdAsync(request);
 
+        if (user is null)
+        {
+            return Results.NotFound($"User with Id: {request.Id} was not found");
+        }
+        
+        return Results.Ok(user);
+    }
+
+    public static async Task<IResult> DeleteUserById(Guid id, IUserService userService, CancellationToken cancellationToken)
+    {
+        var result = await userService.DeleteUserByIdAsync(id);
+        
+        return result ? Results.Ok() : Results.NotFound($"User with Id: {id} was not found");
+    }
 }

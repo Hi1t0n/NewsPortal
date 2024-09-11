@@ -59,6 +59,41 @@ public class UserService : IUserService
         return data;
     }
 
+    public async Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == request.Id);
+
+        if (user is null)
+        {
+            return null;
+        }
+        
+        user.Username = request.Username;
+        user.Password = request.Password;
+        user.Email = request.Email;
+        user.PhoneNumber = request.PhoneNumber;
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        return new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber);
+    }
+
+    public async Task<bool> DeleteUserByIdAsync(Guid id)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+        
+        if (user is null)
+        {
+            return false;
+        }
+        
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        
+        return true;
+    }
+    
     public async Task<bool> IsEmailUniqueAsync(string email)
     {
         return !await _context.Users.AnyAsync(x => x.Email == email);
@@ -72,5 +107,10 @@ public class UserService : IUserService
     public async Task<bool> IsUsernameUniqueAsync(string userName)
     {
         return !await _context.Users.AnyAsync(x => x.Username == userName);
+    }
+
+    public async Task<bool> IsUserExist(Guid userId)
+    {
+        return await _context.Users.AnyAsync(x => x.UserId == userId);
     }
 }

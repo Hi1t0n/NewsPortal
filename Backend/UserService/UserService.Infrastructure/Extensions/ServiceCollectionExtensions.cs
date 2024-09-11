@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Context;
+using UserService.Infrastructure.Services;
 
 namespace UserService.Infrastructure.Extensions;
 
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddService(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<IUserService, Services.UserService>();
+        serviceCollection.AddScoped<IValidatorService, ValidatorService>();
         return serviceCollection;
     }
     
