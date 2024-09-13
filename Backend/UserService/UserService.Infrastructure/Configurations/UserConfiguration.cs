@@ -4,6 +4,9 @@ using UserService.Host.Models;
 
 namespace UserService.Infrastructure.Configurations;
 
+/// <summary>
+/// Конфигурация модели <see cref="User"/>
+/// </summary>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)

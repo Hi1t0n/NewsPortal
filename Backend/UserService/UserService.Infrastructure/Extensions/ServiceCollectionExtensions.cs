@@ -9,6 +9,12 @@ namespace UserService.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Добавление бизнес логики
+    /// </summary>
+    /// <param name="serviceCollection">Класс расширения <see cref="IServiceCollection"/></param>
+    /// <param name="connectionString">Строка подключения</param>
+    /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddBusinessLogic(this IServiceCollection serviceCollection,
         string connectionString)
     {
@@ -16,7 +22,12 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddDatabase(connectionString);
         return serviceCollection;
     }
-
+    
+    /// <summary>
+    /// Добавление сервисов в приложение
+    /// </summary>
+    /// <param name="serviceCollection">Класс для расширения<see cref="IServiceCollection"/></param>
+    /// <returns>Обновленая коллекция <see cref="IServiceCollection"/></returns>
     private static IServiceCollection AddService(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<IUserRepository, UserRepository>();
@@ -24,6 +35,12 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
     
+    /// <summary>
+    /// Добавление БД в приложение
+    /// </summary>
+    /// <param name="serviceCollection">Класс для расширения <see cref="IServiceCollection"/></param>
+    /// <param name="connectionString">Строка подключения</param>
+    /// <returns>Обновленая коллекция <see cref="IServiceCollection"/></returns>
     private static IServiceCollection AddDatabase(this IServiceCollection serviceCollection, string connectionString)
     {
         serviceCollection.AddDbContext<ApplicationDbContext>(x=> x.UseNpgsql(connectionString));

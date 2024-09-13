@@ -14,24 +14,16 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserUpdateRequestVal
 
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
-});
-
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseDeveloperExceptionPage();
-//     app.UseSwagger();
-//     app.UseSwaggerUI(options =>
-//     {
-//         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-//         options.RoutePrefix = string.Empty;
-//     });
-// }
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
 app.AddUserRouters();
 

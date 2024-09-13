@@ -6,6 +6,9 @@ using UserService.Infrastructure.Context;
 
 namespace UserService.Infrastructure.Repositories;
 
+/// <summary>
+/// <see cref="IUserRepository"/>
+/// </summary>
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
@@ -15,6 +18,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
+    /// <inheritdoc/>
     public async Task<User> AddUserAsync(UserAddRequest request)
     {
         var user = new User
@@ -31,8 +35,9 @@ public class UserRepository : IUserRepository
         
         return user;
     }
-
-    public async Task<UserGetResponse> GetUserByIdAsync(Guid id)
+    
+    /// <inheritdoc/>
+    public async Task<UserResponse> GetUserByIdAsync(Guid id)
     {
 
         var data = await _context.Users
@@ -48,19 +53,21 @@ public class UserRepository : IUserRepository
             return null;
         }
 
-        return new UserGetResponse(data.UserId, data.Username, data.Password, data.Email,data.EmailConfirmed, data.PhoneNumber);
+        return new UserResponse(data.UserId, data.Username, data.Email,data.EmailConfirmed, data.PhoneNumber);
     }
 
-    public async Task<List<UserGetResponse>> GetUsersAsync()
+    /// <inheritdoc/>
+    public async Task<List<UserResponse>> GetUsersAsync()
     {
         var data = await _context.Users
-            .Select(x=> new UserGetResponse(x.UserId, x.Username, x.Password, x.Email, x.EmailConfirmed,x.PhoneNumber))
+            .Select(x=> new UserResponse(x.UserId, x.Username, x.Email, x.EmailConfirmed,x.PhoneNumber))
             .AsNoTracking()
             .ToListAsync();
         
         return data;
     }
 
+    /// <inheritdoc/>
     public async Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == request.Id);
@@ -81,6 +88,7 @@ public class UserRepository : IUserRepository
         return new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber);
     }
 
+    /// <inheritdoc/>
     public async Task<bool> DeleteUserByIdAsync(Guid id)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
@@ -96,21 +104,25 @@ public class UserRepository : IUserRepository
         return true;
     }
     
+    /// <inheritdoc/>
     public async Task<bool> IsEmailUniqueAsync(string email)
     {
         return !await _context.Users.AnyAsync(x => x.Email == email);
     }
     
+    /// <inheritdoc/>
     public async Task<bool> IsPhoneNumberUniqueAsync(string phoneNumber)
     {
         return !await _context.Users.AnyAsync(x=> x.PhoneNumber == phoneNumber);
     }
 
+    /// <inheritdoc/>
     public async Task<bool> IsUsernameUniqueAsync(string userName)
     {
         return !await _context.Users.AnyAsync(x => x.Username == userName);
     }
 
+    /// <inheritdoc/>
     public async Task<bool> IsUserExist(Guid userId)
     {
         return await _context.Users.AnyAsync(x => x.UserId == userId);
