@@ -1,10 +1,11 @@
 using UserService.Domain.Contracts;
+using UserService.Host.Models;
 
 namespace UserService.Domain.Interfaces;
 
-public interface IUserService
+public interface IUserRepository
 { 
-    Task AddUserAsync(UserAddRequest request);
+    Task<User> AddUserAsync(UserAddRequest request);
     Task<UserGetResponse> GetUserByIdAsync(Guid id);
     Task<List<UserGetResponse>> GetUsersAsync();
     Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request);

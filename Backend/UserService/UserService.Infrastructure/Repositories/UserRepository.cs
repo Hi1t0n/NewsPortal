@@ -4,18 +4,18 @@ using UserService.Domain.Interfaces;
 using UserService.Host.Models;
 using UserService.Infrastructure.Context;
 
-namespace UserService.Infrastructure.Services;
+namespace UserService.Infrastructure.Repositories;
 
-public class UserService : IUserService
+public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
     
-    public UserService(ApplicationDbContext context)
+    public UserRepository(ApplicationDbContext context)
     {
         _context = context;
     }
     
-    public async Task AddUserAsync(UserAddRequest request)
+    public async Task<User> AddUserAsync(UserAddRequest request)
     {
         var user = new User
         {
@@ -28,6 +28,8 @@ public class UserService : IUserService
         
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
+        
+        return user;
     }
 
     public async Task<UserGetResponse> GetUserByIdAsync(Guid id)
