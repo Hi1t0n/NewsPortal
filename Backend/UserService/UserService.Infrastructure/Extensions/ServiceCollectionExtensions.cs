@@ -1,6 +1,8 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using UserService.Domain.Interfaces;
+using UserService.Domain.Validators;
 using UserService.Infrastructure.Context;
 using UserService.Infrastructure.Repositories;
 using UserService.Infrastructure.Services;
@@ -20,6 +22,7 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddService();
         serviceCollection.AddDatabase(connectionString);
+        serviceCollection.AddValidator();
         return serviceCollection;
     }
     
@@ -44,6 +47,19 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddDatabase(this IServiceCollection serviceCollection, string connectionString)
     {
         serviceCollection.AddDbContext<ApplicationDbContext>(x=> x.UseNpgsql(connectionString));
+        return serviceCollection;
+    }
+    
+    /// <summary>
+    /// Добавление валидаторов
+    /// </summary>
+    /// <param name="serviceCollection">Класс для расширения <see cref="IServiceCollection"/></param>
+    /// <returns>Обновленная коллекция <see cref="IServiceCollection"/></returns>
+    private static IServiceCollection AddValidator(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddValidatorsFromAssemblyContaining(typeof(UserAddRequestValidator));
+        serviceCollection.AddValidatorsFromAssemblyContaining(typeof(UserUpdateRequestValidator));
+        
         return serviceCollection;
     }
 }

@@ -8,7 +8,7 @@ COPY UserService.Host/*.csproj ./UserService.Host/
 COPY UserService.Domain/*.csproj ./UserService.Domain/
 COPY UserService.Infrastructure/*.csproj ./UserService.Infrastructure/
 
-RUN dotnet restore -r linux-musl-x64
+RUN dotnet restore -r linux-musl-x64docker run -p 8080:8080 -d h1lton/userservice
 
 COPY UserService.Host/. ./UserService.Host/
 COPY UserService.Domain/. ./UserService.Domain/

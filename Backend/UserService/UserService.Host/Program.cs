@@ -5,12 +5,14 @@ using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddBusinessLogic(builder.Configuration.GetConnectionString("PostgreSQL"));
+builder.Services.AddBusinessLogic(builder.Configuration.GetConnectionString("PostgreSQL")!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserAddRequestValidator));
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserUpdateRequestValidator));
+
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -24,6 +26,13 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+app.UseCors(x =>
+{
+    x.AllowAnyHeader();
+    x.WithOrigins("*");
+    x.AllowAnyOrigin();
+});
 
 app.AddUserRouters();
 

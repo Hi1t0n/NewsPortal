@@ -37,7 +37,7 @@ public class UserRepository : IUserRepository
     }
     
     /// <inheritdoc/>
-    public async Task<UserResponse> GetUserByIdAsync(Guid id)
+    public async Task<UserResponse?> GetUserByIdAsync(Guid id)
     {
 
         var data = await _context.Users

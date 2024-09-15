@@ -20,7 +20,7 @@ public interface IUserRepository
     /// </summary>
     /// <param name="id">Идентиффикатор пользователя</param>
     /// <returns>Данные пользователя</returns>
-    Task<UserResponse> GetUserByIdAsync(Guid id);
+    Task<UserResponse?> GetUserByIdAsync(Guid id);
     
     /// <summary>
     /// Метод получения всех пользователей
