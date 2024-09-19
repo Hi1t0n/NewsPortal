@@ -32,7 +32,7 @@ app.UseCors(x =>
     x.AllowAnyHeader();
     x.WithOrigins("*");
     x.AllowAnyOrigin();
-});
+}); 
 
 app.AddUserRouters();
 
