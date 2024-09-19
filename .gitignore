@@ -5,4 +5,10 @@
 /Backend/UserService/UserService.Host/obj
 /Backend/UserService/UserService.Infrastructure/bin
 /Backend/UserService/UserService.Infrastructure/obj
-/.git
+/Backend/NewsService/.idea
+/Backend/NewsService/NewsService.Domain/bin
+/Backend/NewsService/NewsService.Domain/obj
+/Backend/NewsService/NewsService.NewsService.Host/bin
+/Backend/NewsService/NewsService.Host/obj
+/Backend/NewsService/NewsService.Infrastructure/bin
+/Backend/NewsService/NewsService.Infrastructure/obj

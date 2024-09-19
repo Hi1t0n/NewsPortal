@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsService.Host", "NewsService.Host\NewsService.Host.csproj", "{A569EC21-BCA9-4151-ABFA-A4A48601B2DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsService.Infrastructure", "NewsService.Infrastructure\NewsService.Infrastructure.csproj", "{ECEA355B-013B-4C93-A704-7DA43FDDED7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsService.Domain", "NewsService.Domain\NewsService.Domain.csproj", "{5F706289-7B32-41A4-9DCE-F75968C102EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A569EC21-BCA9-4151-ABFA-A4A48601B2DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A569EC21-BCA9-4151-ABFA-A4A48601B2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A569EC21-BCA9-4151-ABFA-A4A48601B2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A569EC21-BCA9-4151-ABFA-A4A48601B2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECEA355B-013B-4C93-A704-7DA43FDDED7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECEA355B-013B-4C93-A704-7DA43FDDED7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECEA355B-013B-4C93-A704-7DA43FDDED7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECEA355B-013B-4C93-A704-7DA43FDDED7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F706289-7B32-41A4-9DCE-F75968C102EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F706289-7B32-41A4-9DCE-F75968C102EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F706289-7B32-41A4-9DCE-F75968C102EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F706289-7B32-41A4-9DCE-F75968C102EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
