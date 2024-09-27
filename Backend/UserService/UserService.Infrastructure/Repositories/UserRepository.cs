@@ -12,10 +12,12 @@ namespace UserService.Infrastructure.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly ICryptoService _cryptoService;
     
-    public UserRepository(ApplicationDbContext context)
+    public UserRepository(ApplicationDbContext context, ICryptoService cryptoService)
     {
         _context = context;
+        _cryptoService = cryptoService;
     }
     
     /// <inheritdoc/>
@@ -24,7 +26,7 @@ public class UserRepository : IUserRepository
         var user = new User
         {
             Username = request.Email,
-            Password = request.Password,
+            Password = _cryptoService.HashPassword(request.Password),
             Email = request.Email,
             EmailConfirmed = false,
             PhoneNumber = request.PhoneNumber,

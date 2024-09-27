@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddScoped<IUserRepository, UserRepository>();
         serviceCollection.AddScoped<IValidatorService, ValidatorService>();
+        serviceCollection.AddScoped<ICryptoService, CryptoService>();
         return serviceCollection;
     }
     
