@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  user-service:
+    build:
+      context: ../Backend/UserService/
+      dockerfile: Dockerfile
+    ports:
+      - "5229:5229"
+    links:
+      - user-service-postgreSQL
+    depends_on:
+      - user-service-postgreSQL
+    environment:
+      - ASPNETCORE_ENVIROMENT=Production
+      - ASPNETCORE_URLS=http://+:5229
+      - CONNECTION_STRING_USER_SERVICE=Host=user-service-postgreSQL;Username=postgres;Password=23022005;Database=UserServiceDb;
+
+
+  user-service-postgreSQL:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=UserServiceDb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=23022005
+    volumes:
+      - user-service-postgre-volume:/var/lib/postgresql/data
+
+volumes:
+  user-service-postgre-volume:
+    driver: local
+
+

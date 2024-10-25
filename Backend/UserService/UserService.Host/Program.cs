@@ -1,11 +1,18 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using UserService.Domain.Validators;
+using UserService.Host.Extensions;
 using UserService.Host.Routes;
+using UserService.Infrastructure.Context;
 using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddBusinessLogic(builder.Configuration.GetConnectionString("PostgreSQL")!);
+var connectionString = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString("PostgreSQL")
+    : Environment.GetEnvironmentVariable("CONNECTION_STRING_USER_SERVICE");
+
+builder.Services.AddBusinessLogic(connectionString!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -35,5 +42,6 @@ app.UseCors(x =>
 }); 
 
 app.AddUserRouters();
+app.ApplyMigrations();
 
 app.Run();

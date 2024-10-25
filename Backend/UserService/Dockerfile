@@ -24,5 +24,5 @@ WORKDIR /app
 
 COPY --from=build /out .
 
-EXPOSE 5000 
+EXPOSE 5229 
 ENTRYPOINT ["./UserService.Host"]
