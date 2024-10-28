@@ -34,14 +34,14 @@ public static class UserRoutes
     /// <param name="cancellation"><see cref="CancellationToken"/></param>
     /// <returns>Данные добавленного пользователя</returns>
     public static async Task<IResult> AddUser(UserAddRequest request, IUserRepository userRepository,
-        UserAddRequestValidator validator, CancellationToken cancellation)
+        UserAddRequestValidator validator, CancellationToken cancellationToken)
     {
         var result = await validator.ValidateAsync(request);
         if (!result.IsValid)
         {
             return Results.BadRequest(result.Errors);
         }
-        var user = await userRepository.AddUserAsync(request);
+        var user = await userRepository.AddUserAsync(request, cancellationToken);
         
         return Results.Created($"/api/users/{user.UserId}",new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber));
     }
@@ -54,7 +54,7 @@ public static class UserRoutes
     /// <returns>Список всех пользователей</returns>
     public static async Task<IResult> GetUsers(IUserRepository userRepository, CancellationToken cancellationToken)
     {
-        var users = await userRepository.GetUsersAsync();
+        var users = await userRepository.GetUsersAsync(cancellationToken);
         return Results.Ok(users);
     }
     
@@ -67,7 +67,7 @@ public static class UserRoutes
     /// <returns>Данные пользователя</returns>
     public static async Task<IResult> GetUserById(Guid id, IUserRepository userRepository, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetUserByIdAsync(id);
+        var user = await userRepository.GetUserByIdAsync(id, cancellationToken);
         if (user is null)
         {
             return Results.NotFound(new
@@ -97,7 +97,7 @@ public static class UserRoutes
             return Results.BadRequest(result.Errors);
         }
         
-        var user = await userRepository.UpdateUserByIdAsync(request);
+        var user = await userRepository.UpdateUserByIdAsync(request, cancellationToken);
 
         if (user is null)
         {
@@ -116,7 +116,7 @@ public static class UserRoutes
     /// <returns>Результат удаления</returns>
     public static async Task<IResult> DeleteUserById(Guid id, IUserRepository userRepository, CancellationToken cancellationToken)
     {
-        var result = await userRepository.DeleteUserByIdAsync(id);
+        var result = await userRepository.DeleteUserByIdAsync(id, cancellationToken);
         
         return result ? Results.Ok(result) : Results.NotFound($"User with Id: {id} was not found");
     }

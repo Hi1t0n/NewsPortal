@@ -11,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("PostgreSQL")
     : Environment.GetEnvironmentVariable("CONNECTION_STRING_USER_SERVICE");
+var connectionStringRedis = Environment.GetEnvironmentVariable("CONNECTION_STRING_REDIS");
 
-builder.Services.AddBusinessLogic(connectionString!);
+builder.Services.AddBusinessLogic(connectionString!, connectionStringRedis!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

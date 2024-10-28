@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   user-service:
+    container_name: "user_service"
     build:
       context: ../Backend/UserService/
       dockerfile: Dockerfile
@@ -9,24 +10,36 @@ services:
       - "5229:5229"
     links:
       - user-service-postgreSQL
+      - user-service-Redis
     depends_on:
       - user-service-postgreSQL
+      - user-service-Redis
     environment:
       - ASPNETCORE_ENVIROMENT=Production
       - ASPNETCORE_URLS=http://+:5229
-      - CONNECTION_STRING_USER_SERVICE=Host=user-service-postgreSQL;Username=postgres;Password=23022005;Database=UserServiceDb;
+      - CONNECTION_STRING_USER_SERVICE=Host=user-service-postgreSQL;Username=postgres;Password=23022005;Database=UsersDb;
+      - CONNECTION_STRING_REDIS=user-service-redis:6379
 
 
   user-service-postgreSQL:
+    container_name: "user-service-postgreSQL"
     image: postgres:17-alpine
+    restart: always
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=UserServiceDb
+      - POSTGRES_DB=UsersDb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=23022005
     volumes:
       - user-service-postgre-volume:/var/lib/postgresql/data
+
+  user-service-Redis:
+    container_name: "user-service-Redis"
+    image: redis:7.4.1-alpine
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   user-service-postgre-volume:

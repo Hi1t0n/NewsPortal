@@ -13,15 +13,17 @@ public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly ICryptoService _cryptoService;
+    private readonly ICachedService _cachedService;
     
-    public UserRepository(ApplicationDbContext context, ICryptoService cryptoService)
+    public UserRepository(ApplicationDbContext context, ICryptoService cryptoService, ICachedService cachedService)
     {
         _context = context;
         _cryptoService = cryptoService;
+        _cachedService = cachedService;
     }
     
     /// <inheritdoc/>
-    public async Task<User> AddUserAsync(UserAddRequest request)
+    public async Task<User> AddUserAsync(UserAddRequest request, CancellationToken cancellationToken)
     {
         var user = new User
         {
@@ -37,40 +39,56 @@ public class UserRepository : IUserRepository
         
         return user;
     }
-    
-    /// <inheritdoc/>
-    public async Task<UserResponse?> GetUserByIdAsync(Guid id)
-    {
 
-        var data = await _context.Users
-            .Where(x => x.UserId == id)
-            .Select
-            (x => new 
-                { x.UserId , x.Username, x.Password, x.Email, x.EmailConfirmed, x.PhoneNumber })
-            .AsNoTracking()
-            .FirstOrDefaultAsync();  
+    /// <inheritdoc/>
+    public async Task<UserResponse?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var data = await _cachedService.GetCacheAsync<UserResponse>(id.ToString(), cancellationToken);
+
+        if (data is null)
+        {
+            data = await _context.Users
+                .Where(x => x.UserId == id)
+                .Select(x => 
+                    new UserResponse(x.UserId, x.Username, x.Email,x.EmailConfirmed,x.PhoneNumber))
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
         
         if (data is null)
         {
             return null;
         }
-
-        return new UserResponse(data.UserId, data.Username, data.Email,data.EmailConfirmed, data.PhoneNumber);
-    }
-
-    /// <inheritdoc/>
-    public async Task<List<UserResponse>> GetUsersAsync()
-    {
-        var data = await _context.Users
-            .Select(x=> new UserResponse(x.UserId, x.Username, x.Email, x.EmailConfirmed,x.PhoneNumber))
-            .AsNoTracking()
-            .ToListAsync();
+        
+        await _cachedService.AddCacheAsync<UserResponse>(data.Id.ToString(), data, cancellationToken);
         
         return data;
     }
 
     /// <inheritdoc/>
-    public async Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request)
+    public async Task<List<UserResponse>> GetUsersAsync(CancellationToken cancellationToken)
+    {
+        var data = await _cachedService.GetCacheAsync<List<UserResponse>>("Users", cancellationToken);
+
+
+        if (data is null)
+        {
+            data = await _context.Users
+                .Select(x=> new UserResponse(x.UserId, x.Username, x.Email, x.EmailConfirmed,x.PhoneNumber))
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        if (data is not null)
+        {
+            await _cachedService.AddCacheAsync<List<UserResponse>>("Users", data, cancellationToken);
+        }
+        
+        return data;
+    }
+
+    /// <inheritdoc/>
+    public async Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == request.Id);
 
@@ -91,7 +109,7 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DeleteUserByIdAsync(Guid id)
+    public async Task<bool> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
         

@@ -16,12 +16,13 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="serviceCollection">Класс расширения <see cref="IServiceCollection"/></param>
     /// <param name="connectionString">Строка подключения</param>
+    /// <param name="connectionStringRedis">Строка подключения к Redis</param>
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddBusinessLogic(this IServiceCollection serviceCollection,
-        string connectionString)
+        string connectionString, string connectionStringRedis)
     {
         serviceCollection.AddService();
-        serviceCollection.AddDatabase(connectionString);
+        serviceCollection.AddDatabase(connectionString, connectionStringRedis);
         serviceCollection.AddValidator();
         return serviceCollection;
     }
@@ -36,18 +37,26 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IUserRepository, UserRepository>();
         serviceCollection.AddScoped<IValidatorService, ValidatorService>();
         serviceCollection.AddScoped<ICryptoService, CryptoService>();
+        serviceCollection.AddScoped<ICachedService, CachedService>();
         return serviceCollection;
     }
-    
+
     /// <summary>
     /// Добавление БД в приложение
     /// </summary>
     /// <param name="serviceCollection">Класс для расширения <see cref="IServiceCollection"/></param>
     /// <param name="connectionString">Строка подключения</param>
+    /// <param name="connectionStringRedis">Строка подключения к Redis</param>
     /// <returns>Обновленая коллекция <see cref="IServiceCollection"/></returns>
-    private static IServiceCollection AddDatabase(this IServiceCollection serviceCollection, string connectionString)
+    private static IServiceCollection AddDatabase(this IServiceCollection serviceCollection, string connectionString, string connectionStringRedis)
     {
         serviceCollection.AddDbContext<ApplicationDbContext>(x=> x.UseNpgsql(connectionString));
+        serviceCollection.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = connectionStringRedis;
+            options.InstanceName = "UserService";
+        });
+        
         return serviceCollection;
     }
     
