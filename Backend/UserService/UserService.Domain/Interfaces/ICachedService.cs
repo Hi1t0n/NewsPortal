@@ -13,6 +13,7 @@ public interface ICachedService
     /// <typeparam name="T">Class</typeparam>
     /// <returns>Объект типа T</returns>
     Task<T?> GetCacheAsync<T>(string key, CancellationToken cancellationToken) where T : class;
+    
     /// <summary>
     /// Добавление данных в кэш
     /// </summary>
@@ -22,4 +23,12 @@ public interface ICachedService
     /// <typeparam name="T">Class</typeparam>
     /// <returns>Void Task</returns>
     Task AddCacheAsync<T>(string key, T? data, CancellationToken cancellationToken) where T : class;
+
+    /// <summary>
+    /// Удаление данных из кэша
+    /// </summary>
+    /// <param name="key">Ключ</param>
+    /// <param name="cancellationToken">CancellationToken</param>
+    /// <returns>Void Task</returns>
+    Task RemoveCacheAsync(string key, CancellationToken cancellationToken);
 }

@@ -43,4 +43,10 @@ public class CachedService : ICachedService
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
         }, cancellationToken);
     }
+    
+    /// <inheritdoc />
+    public async Task RemoveCacheAsync(string key, CancellationToken cancellationToken)
+    {
+        await _cache.RemoveAsync(key, cancellationToken);
+    }
 }

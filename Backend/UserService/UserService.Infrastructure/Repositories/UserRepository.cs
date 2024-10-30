@@ -105,6 +105,8 @@ public class UserRepository : IUserRepository
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
 
+        await _cachedService.RemoveCacheAsync(request.Id.ToString(), cancellationToken);
+
         return new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber);
     }
 
@@ -120,6 +122,8 @@ public class UserRepository : IUserRepository
         
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
+
+        await _cachedService.RemoveCacheAsync(id.ToString(), cancellationToken);
         
         return true;
     }
