@@ -30,14 +30,14 @@ public interface IUserRepository
     /// <param name="cancellationToken">cancellationToken</param>
     /// <returns>Список всех пользователей</returns>
     Task<List<UserResponse>> GetUsersAsync(CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Метод обновления данных пользователя
     /// </summary>
     /// <param name="request">DTO с новыми данными</param>
     /// <param name="cancellationToken">cancellationToken</param>
     /// <returns>Новые данные пользователя или null</returns>
-    Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request, CancellationToken cancellationToken);
+    Task<int?> UpdateUserByIdAsync(UserUpdateRequest request, CancellationToken cancellationToken);
     
     /// <summary>
     /// Метод удаления пользователя по Id

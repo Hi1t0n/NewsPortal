@@ -48,11 +48,10 @@ public class UserRepository : IUserRepository
         if (data is null)
         {
             data = await _context.Users
-                .Where(x => x.UserId == id)
                 .Select(x => 
                     new UserResponse(x.UserId, x.Username, x.Email,x.EmailConfirmed,x.PhoneNumber))
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         
         if (data is null)
@@ -88,43 +87,40 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc/>
-    public async Task<UserResponse?> UpdateUserByIdAsync(UserUpdateRequest request, CancellationToken cancellationToken)
+    public async Task<int?> UpdateUserByIdAsync(UserUpdateRequest request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == request.Id);
+        var updateDate = await _context.Users
+            .Where(x=> x.UserId == request.Id)
+            .ExecuteUpdateAsync(u=> u
+                .SetProperty(x => x.Username, request.Username)
+                .SetProperty(x=> x.Password, request.Password)
+                .SetProperty(x => x.Email, request.Email)
+                .SetProperty(x => x.PhoneNumber, request.PhoneNumber), cancellationToken);
 
-        if (user is null)
+        if (updateDate is 0)
         {
             return null;
         }
         
-        user.Username = request.Username;
-        user.Password = request.Password;
-        user.Email = request.Email;
-        user.PhoneNumber = request.PhoneNumber;
-
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
-
         await _cachedService.RemoveCacheAsync(request.Id.ToString(), cancellationToken);
 
-        return new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber);
+        return updateDate;
     }
 
     /// <inheritdoc/>
     public async Task<bool> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id);
-        
-        if (user is null)
+        var userResult = await _context.Users
+            .Where(x=> x.UserId == id)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        if (userResult <= 0)
         {
             return false;
         }
-        
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
 
-        await _cachedService.RemoveCacheAsync(id.ToString(), cancellationToken);
-        
+        await _cachedService.RemoveCacheAsync(id.ToString(), cancellationToken);    
+
         return true;
     }
     

@@ -97,14 +97,14 @@ public static class UserRoutes
             return Results.BadRequest(result.Errors);
         }
         
-        var user = await userRepository.UpdateUserByIdAsync(request, cancellationToken);
+        var updateResult = await userRepository.UpdateUserByIdAsync(request, cancellationToken);
 
-        if (user is null)
+        if (updateResult is null)
         {
             return Results.NotFound($"User with Id: {request.Id} was not found");
         }
         
-        return Results.Ok(user);
+        return Results.Ok($"User with Id: {request.Id} was updated");
     }
     
     /// <summary>
@@ -118,6 +118,6 @@ public static class UserRoutes
     {
         var result = await userRepository.DeleteUserByIdAsync(id, cancellationToken);
         
-        return result ? Results.Ok(result) : Results.NotFound($"User with Id: {id} was not found");
+        return result ? Results.Ok($"User with Id: {id} update") : Results.NotFound($"User with Id: {id} was not found");
     }
 }
