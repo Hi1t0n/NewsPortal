@@ -15,3 +15,6 @@
 /Backend/NewsService/NewsService.Host/bin
 /Backend/NewsService/NewsService.Infrastructure/bin
 /Backend/NewsService/NewsService.Infrastructure/obj
+/Backend/SharedLibrarySolution/.idea
+/Backend/SharedLibrarySolution/NewsPortal.SharedLibrary/bin
+/Backend/SharedLibrarySolution/NewsPortal.SharedLibrary/obj

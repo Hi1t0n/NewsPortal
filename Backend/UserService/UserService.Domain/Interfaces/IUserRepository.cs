@@ -29,7 +29,7 @@ public interface IUserRepository
     /// </summary>
     /// <param name="cancellationToken">cancellationToken</param>
     /// <returns>Список всех пользователей</returns>
-    Task<List<UserResponse>> GetUsersAsync(CancellationToken cancellationToken);
+    Task<List<UserResponse>?> GetUsersAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Метод обновления данных пользователя

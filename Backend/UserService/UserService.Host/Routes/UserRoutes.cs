@@ -31,7 +31,7 @@ public static class UserRoutes
     /// <param name="request">DTO с данными пользователя</param>
     /// <param name="userRepository"><see cref="IUserRepository"/></param>
     /// <param name="validator">Валидатор <see cref="UserAddRequestValidator"/></param>
-    /// <param name="cancellation"><see cref="CancellationToken"/></param>
+    /// <param name="cancellationToken"><see cref="CancellationToken"/></param>
     /// <returns>Данные добавленного пользователя</returns>
     public static async Task<IResult> AddUser(UserAddRequest request, IUserRepository userRepository,
         UserAddRequestValidator validator, CancellationToken cancellationToken)
@@ -104,7 +104,7 @@ public static class UserRoutes
             return Results.NotFound($"User with Id: {request.Id} was not found");
         }
         
-        return Results.Ok($"User with Id: {request.Id} was updated");
+        return Results.NoContent();
     }
     
     /// <summary>

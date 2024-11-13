@@ -51,7 +51,7 @@ public class UserRepository : IUserRepository
                 .Select(x => 
                     new UserResponse(x.UserId, x.Username, x.Email,x.EmailConfirmed,x.PhoneNumber))
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
         
         if (data is null)
@@ -65,7 +65,7 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc/>
-    public async Task<List<UserResponse>> GetUsersAsync(CancellationToken cancellationToken)
+    public async Task<List<UserResponse>?> GetUsersAsync(CancellationToken cancellationToken)
     {
         var data = await _cachedService.GetCacheAsync<List<UserResponse>>("Users", cancellationToken);
 
