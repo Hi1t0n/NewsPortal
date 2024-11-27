@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,10 +68,10 @@ public static class SharedServiceContainer
         return serviceCollection;
     }
 
-    public static IApplicationBuilder AddMiddleware(this IApplicationBuilder applicationBuilder)
+    public static IApplicationBuilder UseSharedMiddleware(this IApplicationBuilder applicationBuilder)
     {
         applicationBuilder.UseMiddleware<GlobalException>();
-        applicationBuilder.UseMiddleware<ListenToOnlyApiGateway>();
+        //applicationBuilder.UseMiddleware<ListenToOnlyApiGateway>();
 
         return applicationBuilder;
     }

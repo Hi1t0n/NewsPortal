@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Domain", "UserS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Infrastructure", "UserService.Infrastructure\UserService.Infrastructure.csproj", "{E98F6ED9-1942-40FF-A16A-FF9C2FC029D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.SharedLibrary", "..\SharedLibrarySolution\NewsPortal.SharedLibrary\NewsPortal.SharedLibrary.csproj", "{009E95D0-94DA-40D3-A48D-99166BDAECCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{E98F6ED9-1942-40FF-A16A-FF9C2FC029D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98F6ED9-1942-40FF-A16A-FF9C2FC029D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E98F6ED9-1942-40FF-A16A-FF9C2FC029D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{009E95D0-94DA-40D3-A48D-99166BDAECCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{009E95D0-94DA-40D3-A48D-99166BDAECCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{009E95D0-94DA-40D3-A48D-99166BDAECCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{009E95D0-94DA-40D3-A48D-99166BDAECCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

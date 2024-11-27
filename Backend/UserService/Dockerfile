@@ -1,28 +1,25 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
+WORKDIR /src
+
+COPY ["UserService/UserService.sln", "UserService/"]
+COPY ["UserService/UserService.Domain/UserService.Domain.csproj", "UserService/UserService.Domain/"]
+COPY ["UserService/UserService.Infrastructure/UserService.Infrastructure.csproj", "UserService/UserService.Infrastructure/"]
+COPY ["UserService/UserService.Host/UserService.Host.csproj", "UserService/UserService.Host/"]
+COPY ["SharedLibrarySolution/NewsPortal.SharedLibrary/NewsPortal.SharedLibrary.csproj", "SharedLibrarySolution/NewsPortal.SharedLibrary/"]
+
+RUN dotnet restore "UserService/UserService.sln"
+
+COPY . .
+
+WORKDIR "/src/UserService/UserService.Host"
+
+RUN dotnet publish -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtime
 WORKDIR /app
 
-COPY *.sln .
+COPY --from=build /app ./
 
-COPY UserService.Host/*.csproj ./UserService.Host/
-COPY UserService.Domain/*.csproj ./UserService.Domain/
-COPY UserService.Infrastructure/*.csproj ./UserService.Infrastructure/
-
-RUN dotnet restore -r linux-musl-x64
-
-COPY UserService.Host/. ./UserService.Host/
-COPY UserService.Domain/. ./UserService.Domain/
-COPY UserService.Infrastructure/. ./UserService.Infrastructure/
-
-RUN dotnet build 
-
-RUN dotnet publish -c Release -o /out -r linux-musl-x64
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS publish
-
-WORKDIR /app
-
-COPY --from=build /out .
-
-EXPOSE 5229 
-ENTRYPOINT ["./UserService.Host"]
+EXPOSE 5229
+ENTRYPOINT ["dotnet", "UserService.Host.dll"]

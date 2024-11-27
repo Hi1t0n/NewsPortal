@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.DependencyInjection;
 using UserService.Domain.Validators;
 using UserService.Host.Extensions;
 using UserService.Host.Routes;
@@ -12,17 +13,19 @@ var connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("PostgreSQL")
     : Environment.GetEnvironmentVariable("CONNECTION_STRING_USER_SERVICE");
 var connectionStringRedis = Environment.GetEnvironmentVariable("CONNECTION_STRING_REDIS");
+var fileName = builder.Configuration.GetSection("Logger:FileName").Value;
 
-builder.Services.AddBusinessLogic(connectionString!, connectionStringRedis!);
+builder.Services.AddBusinessLogic(builder.Configuration,connectionString!, connectionStringRedis!, fileName!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserAddRequestValidator));
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserUpdateRequestValidator));
 
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseSharedMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
@@ -40,7 +43,8 @@ app.UseCors(x =>
     x.AllowAnyHeader();
     x.WithOrigins("*");
     x.AllowAnyOrigin();
-}); 
+});
+
 
 app.AddUserRouters();
 app.ApplyMigrations();

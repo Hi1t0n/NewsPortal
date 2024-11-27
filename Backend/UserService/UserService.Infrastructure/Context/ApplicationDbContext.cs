@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UserService.Domain.Models;
 using UserService.Host.Models;
 using UserService.Infrastructure.Configurations;
 
@@ -14,7 +15,9 @@ public sealed class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleConfiguration());
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
 }

@@ -1,3 +1,5 @@
+using UserService.Domain.Models;
+
 namespace UserService.Host.Models;
 
 public class User
