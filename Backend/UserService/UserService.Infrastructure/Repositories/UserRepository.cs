@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserService.Domain.Contracts;
 using UserService.Domain.Interfaces;
-using UserService.Host.Models;
+using UserService.Domain.Models;
 using UserService.Infrastructure.Context;
 
 namespace UserService.Infrastructure.Repositories;
@@ -27,6 +27,7 @@ public class UserRepository : IUserRepository
     {
         var user = new User
         {
+            UserId = Guid.NewGuid(),
             Username = request.Email,
             Password = _cryptoService.HashPassword(request.Password),
             Email = request.Email,
@@ -48,8 +49,9 @@ public class UserRepository : IUserRepository
         if (data is null)
         {
             data = await _context.Users
+                .Include(x => x.Role)
                 .Select(x => 
-                    new UserResponse(x.UserId, x.Username, x.Email,x.EmailConfirmed,x.PhoneNumber))
+                    new UserResponse(x.UserId, x.Username,x.Role.Name, x.Email,x.EmailConfirmed,x.PhoneNumber))
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
@@ -73,7 +75,8 @@ public class UserRepository : IUserRepository
         if (data is null)
         {
             data = await _context.Users
-                .Select(x=> new UserResponse(x.UserId, x.Username, x.Email, x.EmailConfirmed,x.PhoneNumber))
+                .Include(x=> x.Role)
+                .Select(x=> new UserResponse(x.UserId, x.Username,x.Role.Name, x.Email, x.EmailConfirmed,x.PhoneNumber))
                 .AsNoTracking()
                 .ToListAsync();
         }

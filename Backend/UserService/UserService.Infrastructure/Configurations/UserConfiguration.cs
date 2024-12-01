@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using UserService.Host.Models;
+using UserService.Domain.Models;
 
 namespace UserService.Infrastructure.Configurations;
 
@@ -21,5 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.EmailConfirmed).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
         builder.HasIndex(x=> x.PhoneNumber).IsUnique();
+
+        builder.HasOne(x => x.Role)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.RoleId);
     }
 }

@@ -43,7 +43,7 @@ public static class UserRoutes
         }
         var user = await userRepository.AddUserAsync(request, cancellationToken);
         
-        return Results.Created($"/api/users/{user.UserId}",new UserResponse(user.UserId, user.Username, user.Email, user.EmailConfirmed, user.PhoneNumber));
+        return Results.Ok();
     }
     
     /// <summary>

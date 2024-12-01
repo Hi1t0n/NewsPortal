@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using UserService.Domain.Models;
-using UserService.Host.Models;
 using UserService.Infrastructure.Configurations;
 
 namespace UserService.Infrastructure.Context;

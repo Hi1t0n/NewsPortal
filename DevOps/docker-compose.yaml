@@ -1,5 +1,7 @@
 version: '3.9'
 
+name: "NewsPortal"
+
 services:
   user-service:
     container_name: "user_service"
@@ -40,6 +42,17 @@ services:
     restart: always
     ports:
       - "6379:6379"
+  
+  nginx:
+    container_name: "nginx"
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "7788:7788"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - user-service
 
 volumes:
   user-service-postgre-volume:

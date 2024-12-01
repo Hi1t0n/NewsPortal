@@ -1,3 +1,3 @@
 ﻿namespace SharedLibrary.Responses;
 
-public record Response(bool Flag = false, string Message = null!);
+public record Response(string Message = null!, bool Flag = false);

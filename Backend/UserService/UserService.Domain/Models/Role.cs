@@ -1,9 +1,9 @@
-﻿using UserService.Host.Models;
-
-namespace UserService.Domain.Models;
+﻿namespace UserService.Domain.Models;
 
 public class Role
 {
-    public Guid Id { get; set; } = Guid.Empty;
-    public string Name { get; set; } = string.Empty;
+    public required Guid Id { get; set; } = Guid.Empty;
+    public string? Name { get; set; } = string.Empty;
+
+    public List<User>? Users { get; set; } = new List<User>();
 }

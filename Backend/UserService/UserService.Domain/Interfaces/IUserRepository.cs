@@ -1,5 +1,5 @@
 using UserService.Domain.Contracts;
-using UserService.Host.Models;
+using UserService.Domain.Models;
 
 namespace UserService.Domain.Interfaces;
 
