@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Host", "UserService.Host\UserService.Host.csproj", "{43664F2A-8E5B-4F90-B74E-F1FD64AE1046}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Infrastructure", "UserService.Infrastructure\UserService.Infrastructure.csproj", "{0BF2568F-83F4-4186-8063-7934C249FBEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Domain", "UserService.Domain\UserService.Domain.csproj", "{9A9AA3B7-A754-459B-AF7E-D95F70FAB055}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43664F2A-8E5B-4F90-B74E-F1FD64AE1046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43664F2A-8E5B-4F90-B74E-F1FD64AE1046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43664F2A-8E5B-4F90-B74E-F1FD64AE1046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43664F2A-8E5B-4F90-B74E-F1FD64AE1046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BF2568F-83F4-4186-8063-7934C249FBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BF2568F-83F4-4186-8063-7934C249FBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BF2568F-83F4-4186-8063-7934C249FBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BF2568F-83F4-4186-8063-7934C249FBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A9AA3B7-A754-459B-AF7E-D95F70FAB055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9AA3B7-A754-459B-AF7E-D95F70FAB055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9AA3B7-A754-459B-AF7E-D95F70FAB055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9AA3B7-A754-459B-AF7E-D95F70FAB055}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
