@@ -9,4 +9,5 @@ public class User
     public bool EmailConfirmed { get; set; } = false;
     public string? PhoneNumber { get; set; } = string.Empty;
     public bool PhoneNumberConfirmed { get; set; } = false;
+    public bool IsDelete { get; set; } = false;
 }

@@ -1,5 +1,6 @@
 ﻿using UserService.Domain.Contacts;
 using UserService.Domain.Models;
+using UserService.Infrastructure.Services;
 
 namespace UserService.Infrastructure.Extensions;
 
@@ -11,7 +12,7 @@ public static class ContractExtensions
         {
             UserId = Guid.NewGuid(),
             UserName = contract.UserName,
-            Password = contract.Password,
+            Password = CryptoService.HashPassword(contract.Password),
             Email = contract.Email,
             PhoneNumber = contract.PhoneNumber
         };

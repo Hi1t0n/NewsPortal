@@ -14,11 +14,11 @@ public static class UserEndpoints
         return webApplication;
     }
 
-    private async static Task<IResult> AddUserAsync(AddUserRequestContract contract, IUserRepository repository)
+    private async static Task<IResult> AddUserAsync(AddUserRequestContract contract, IUserRepository repository, CancellationToken cancellationToken)
     {
         var user = contract.ToModel();
 
-        var result = await repository.AddUserAsync(user);
+        var result = await repository.AddUserAsync(user, cancellationToken);
 
         if (result is null)
         {
