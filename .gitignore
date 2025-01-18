@@ -1,6 +1,7 @@
 /.git
 /.idea
 /Backend/UserService/.idea
+/Backend/UserService/obj
 /Backend/NewsService/.idea
 /Backend/UserService/UserService.Domain/bin
 /Backend/UserService/UserService.Domain/obj
