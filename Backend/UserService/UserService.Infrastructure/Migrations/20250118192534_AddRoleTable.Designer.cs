@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UserService.Infrastructure.Context;
@@ -11,9 +12,11 @@ using UserService.Infrastructure.Context;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118192534_AddRoleTable")]
+    partial class AddRoleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,24 +32,11 @@ namespace UserService.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("RoleName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("RoleId");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = new Guid("7569a46a-0770-4a54-98a8-4efd0ccf1837"),
-                            RoleName = "User"
-                        },
-                        new
-                        {
-                            RoleId = new Guid("fe43f4cc-f6ef-4b9e-a4ef-3a3855e1ef9a"),
-                            RoleName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("UserService.Domain.Models.User", b =>
@@ -75,9 +65,7 @@ namespace UserService.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<Guid?>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValue(new Guid("7569a46a-0770-4a54-98a8-4efd0ccf1837"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserName")
                         .IsRequired()

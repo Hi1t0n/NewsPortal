@@ -19,4 +19,16 @@ public static class ContractExtensions
 
         return user;
     }
+
+    public static User ToModel(this UpdateUserRequestContract contract)
+    {
+        var user = new User()
+        {
+            UserName = contract.UserName,
+            Email = contract.Email,
+            PhoneNumber = contract.PhoneNumber
+        };
+
+        return user;
+    }
 }

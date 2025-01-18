@@ -10,14 +10,6 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     private readonly ApplicationDbContext _context = context;
     
-    public async Task<User>? AddUserAsync(User user)
-    {
-        await _context.AddAsync(user);
-        await _context.SaveChangesAsync();
-
-        return user;
-    }
-
     public async Task<User?> AddUserAsync(User user, CancellationToken cancellationToken)
     {
         var result = await _context.Users.AddAsync(user, cancellationToken);
@@ -29,7 +21,10 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
     public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
+        var user = await _context.Users
+            .Include(x=> x.Role)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.UserId == id && !x.IsDelete, cancellationToken);
 
         if (user is null)
         {
@@ -39,9 +34,13 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         return user;
     }
 
-    public async Task<List<User>> GetUsersAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken cancellationToken)
     {
-        var users = await _context.Users.Where(x=> !x.IsDelete).ToListAsync(cancellationToken);
+        var users = await _context.Users
+            .Include(x=> x.Role)
+            .Where(x=> !x.IsDelete)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         return users;
     }
@@ -97,7 +96,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
         var result = _context.Users.Update(restoringUser);
 
+        await _context.SaveChangesAsync(cancellationToken);
+        
         return result.Entity;
-
     }
 }
