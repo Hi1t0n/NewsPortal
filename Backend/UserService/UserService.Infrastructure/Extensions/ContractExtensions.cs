@@ -11,9 +11,9 @@ public static class ContractExtensions
         var user = new User()
         {
             UserId = Guid.NewGuid(),
-            UserName = contract.UserName,
+            UserName = contract.UserName.ToLower(),
             Password = CryptoService.HashPassword(contract.Password),
-            Email = contract.Email,
+            Email = contract.Email!.ToLower(),
             PhoneNumber = contract.PhoneNumber
         };
 
@@ -24,8 +24,8 @@ public static class ContractExtensions
     {
         var user = new User()
         {
-            UserName = contract.UserName,
-            Email = contract.Email,
+            UserName = contract.UserName.ToLower(),
+            Email = contract.Email.ToLower(),
             PhoneNumber = contract.PhoneNumber
         };
 

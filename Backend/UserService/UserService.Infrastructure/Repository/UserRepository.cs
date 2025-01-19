@@ -14,7 +14,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     {
         var result = await _context.Users.AddAsync(user, cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return result.Entity;
     }
@@ -85,7 +85,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<User?> RestoreUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var restoringUser =
-            await _context.Users.FirstOrDefaultAsync(x => x.UserId == id && x.IsDelete, cancellationToken);
+            await _context.Users.FirstOrDefaultAsync(x => x.UserId == id && x.IsDelete == true, cancellationToken);
 
         if (restoringUser is null)
         {
@@ -99,5 +99,20 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         await _context.SaveChangesAsync(cancellationToken);
         
         return result.Entity;
+    }
+
+    public async Task<bool> ExistByEmail(string? email)
+    {
+        return await _context.Users.AnyAsync(x => x.Email == email);
+    }
+
+    public async Task<bool> ExistByPhoneNumber(string? phoneNumber)
+    {
+        return await _context.Users.AnyAsync(x => x.PhoneNumber == phoneNumber);
+    }
+
+    public async Task<bool> ExistByUserName(string userName)
+    {
+        return await _context.Users.AnyAsync(x => x.UserName == userName);
     }
 }

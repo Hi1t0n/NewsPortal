@@ -10,4 +10,7 @@ public interface IUserRepository
     Task<User?> UpdateUserByIdAsync(Guid id, User user, CancellationToken cancellationToken);
     Task<User?> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<User?> RestoreUserByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<bool> ExistByEmail(string? email);
+    Task<bool> ExistByPhoneNumber(string? phoneNumber);
+    Task<bool> ExistByUserName(string userName);
 }

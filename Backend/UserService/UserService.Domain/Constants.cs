@@ -2,7 +2,7 @@
 
 public static class Constants
 {
-    public static int RetryOnFailure = 10;
-    public static string ConnectionStringConfiguration = "PostgreSQL";
-    public static string CoonectionStringEnvironment = "CONNECTION_STRING_USER_SERVICE";
+    public static readonly int RetryOnFailure = 10;
+    public static readonly string ConnectionStringConfiguration = "PostgreSQL";
+    public static readonly string CoonectionStringEnvironment = "CONNECTION_STRING_USER_SERVICE";
 }

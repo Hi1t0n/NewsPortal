@@ -1,7 +1,10 @@
-﻿using UserService.Domain.Contacts;
+﻿using System.Net;
+using UserService.Domain;
+using UserService.Domain.Contacts;
 using UserService.Domain.Interfaces;
 using UserService.Domain.Models;
 using UserService.Infrastructure.Extensions;
+using UserService.Infrastructure.Services;
 
 namespace UserService.Host.Endpoints;
 
@@ -21,16 +24,28 @@ public static class UserEndpoints
         return webApplication;
     }
 
-    private static async Task<IResult> AddUserAsync(AddUserRequestContract contract, CancellationToken cancellationToken, IUserRepository repository)
+    private static async Task<IResult> AddUserAsync(AddUserRequestContract contract, CancellationToken cancellationToken, IUserRepository repository, HttpContext httpContext)
     {
         var user = contract.ToModel();
 
-        var result = await repository.AddUserAsync(user, cancellationToken);
+        var validateResult = await user.ValidateUserData(repository);
 
-        if (result is null)
+        if (!validateResult.IsValid)
         {
-            return Results.BadRequest();
+            switch (validateResult.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return Results.BadRequest
+                        (new Response((int)HttpStatusCode.BadRequest, validateResult.Message));
+                    break;
+                case HttpStatusCode.Conflict:
+                    return Results.Conflict
+                        (new Response((int)HttpStatusCode.Conflict, validateResult.Message));
+                    break;
+            }
         }
+        
+        await repository.AddUserAsync(user, cancellationToken);
 
         return Results.Ok();
     }
@@ -42,10 +57,8 @@ public static class UserEndpoints
         
         if(result is null)
         {
-            return Results.NotFound(new
-            {
-                errorMessage = $"User with Id: {userId} Not Found"
-            });
+            return Results.NotFound
+                (new Response((int)HttpStatusCode.NotFound, $"User with Id: {userId} Not Found"));
         }
 
         var response = result.ToResponse();
@@ -71,10 +84,8 @@ public static class UserEndpoints
 
         if (result is null)
         {
-            return Results.NotFound(new
-            {
-                errorMessage = $"User with Id: {userId} Not Found"
-            });
+            return Results.NotFound
+                (new Response((int)HttpStatusCode.NotFound, $"User with Id: {userId} Not Found"));
         }
 
         return Results.Ok();
@@ -88,10 +99,8 @@ public static class UserEndpoints
 
         if (result is null)
         {
-            return Results.NotFound(new
-            {
-                errorMessage = $"User with Id: {userId} Not Found"
-            });
+            return Results.NotFound
+                (new Response((int)HttpStatusCode.NotFound, $"User with Id: {userId} Not Found"));
         }
 
         return Results.Ok();
@@ -104,10 +113,8 @@ public static class UserEndpoints
         
         if (result is null)
         {
-            return Results.NotFound(new
-            {
-                errorMessage = $"User with Id: {userId} Not Found"
-            });
+            return Results.NotFound
+                (new Response((int)HttpStatusCode.NotFound, $"User with Id: {userId} Not Found"));
         }
 
         return Results.Ok();
