@@ -25,7 +25,7 @@ public static class UserEndpoints
     }
 
     private static async Task<IResult> AddUserAsync(AddUserRequestContract contract,
-        CancellationToken cancellationToken, IUserRepository repository, HttpContext httpContext)
+        CancellationToken cancellationToken, IUserRepository repository)
     {
         var validateResult = await contract.ValidateData(repository);
 
@@ -74,8 +74,8 @@ public static class UserEndpoints
         return Results.Ok(response);
     }
 
-    private static async Task<IResult> UpdateUserByIdAsync(Guid userId, UpdateUserRequestContract contract, CancellationToken cancellationToken,
-        IUserRepository repository)
+    private static async Task<IResult> UpdateUserByIdAsync(Guid userId, UpdateUserRequestContract contract,
+        CancellationToken cancellationToken, IUserRepository repository)
     {
         var validateResult = await contract.ValidateData(repository);
         
