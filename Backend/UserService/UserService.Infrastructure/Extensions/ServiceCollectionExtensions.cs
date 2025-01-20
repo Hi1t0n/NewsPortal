@@ -10,10 +10,12 @@ namespace UserService.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddBusinessLogic(this IServiceCollection serviceCollection, IConfiguration  configuration, string connectionString)
+    public static IServiceCollection AddBusinessLogic(this IServiceCollection serviceCollection, string connectionStringDb, string connectionStringRedis)
     {
         serviceCollection.AddServices();
-        serviceCollection.AddDataBase(connectionString);
+        serviceCollection.AddDataBase(connectionStringDb);
+        serviceCollection.AddRedis(connectionStringRedis);
+        
         return serviceCollection;
     }
 
@@ -21,7 +23,21 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString, 
-                builder => builder.EnableRetryOnFailure(Constants.RetryOnFailure)));
+                builder =>
+                {
+                    builder.EnableRetryOnFailure(Constants.RetryOnFailure);
+                }));
+
+        return serviceCollection;
+    }
+
+    private static IServiceCollection AddRedis(this IServiceCollection serviceCollection, string connectionString)
+    {
+        serviceCollection.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = connectionString;
+            options.InstanceName = Constants.InstanceNameRedis;
+        });
 
         return serviceCollection;
     }

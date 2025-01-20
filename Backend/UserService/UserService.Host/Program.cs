@@ -5,14 +5,18 @@ using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connectionString = builder.Environment.IsDevelopment()
-    ? builder.Configuration.GetConnectionString(Constants.ConnectionStringConfiguration)!
-    : Environment.GetEnvironmentVariable(Constants.CoonectionStringEnvironment)!;
+string connectionStringPostgreSql = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString(Constants.ConnectionStringDbConfiguration)!
+    : Environment.GetEnvironmentVariable(Constants.ConnectionStringDbEnvironment)!;
+
+string connectionStringRedis = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString(Constants.ConnectionStringRedisConfiguration)!
+    : Environment.GetEnvironmentVariable(Constants.ConnectionStringRedisEnvironment)!;
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddBusinessLogic(builder.Configuration, connectionString);
+builder.Services.AddBusinessLogic(connectionStringPostgreSql, connectionStringRedis);
 
 var app = builder.Build();
 
