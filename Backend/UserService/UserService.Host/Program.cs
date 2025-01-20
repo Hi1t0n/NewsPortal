@@ -16,7 +16,7 @@ builder.Services.AddBusinessLogic(builder.Configuration, connectionString);
 
 var app = builder.Build();
 
-if (true)
+if (builder.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
