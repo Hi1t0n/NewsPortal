@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using UserService.Domain;
+using UserService.Domain.Contacts;
 using UserService.Domain.Interfaces;
 using UserService.Domain.Models;
 
@@ -10,39 +11,75 @@ namespace UserService.Infrastructure.Services;
 public static class ValidateDataService
 {
     
-    public static async Task<ValidateResult> ValidateUserData(this User user, IUserRepository userRepository)
+    public static async Task<ValidateResult> ValidateData(this AddUserRequestContract contract, IUserRepository userRepository)
     {
-        if(string.IsNullOrWhiteSpace(user.UserName))
+        if(string.IsNullOrWhiteSpace(contract.UserName))
         {
             return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect Username");
         }
 
-        if (await userRepository.ExistByUserName(user.UserName.ToLower()))
+        if (await userRepository.ExistByUserName(contract.UserName.ToLower()))
         {
             return  ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Username is already taken");
         }
         
-        if(string.IsNullOrWhiteSpace(user.Password))
+        if(string.IsNullOrWhiteSpace(contract.Password))
         {
             return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect Password");
         }
 
-        if(!IsValidEmail(user.Email))
+        if(!IsValidEmail(contract.Email))
         {
             return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect Email");
         }
         
-        if (await userRepository.ExistByEmail(user.Email!.ToLower()))
+        if (await userRepository.ExistByEmail(contract.Email!.ToLower()))
         {
             return ValidateResult.Invalid(HttpStatusCode.Conflict, $"Email is already taken");
         }
 
-        if (!IsValidPhoneNumber(user.PhoneNumber))
+        if (!IsValidPhoneNumber(contract.PhoneNumber))
         {
             return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect phone number");
         }
         
-        if (await userRepository.ExistByPhoneNumber(user.PhoneNumber))
+        if (await userRepository.ExistByPhoneNumber(contract.PhoneNumber))
+        {
+            return ValidateResult.Invalid(HttpStatusCode.Conflict, $"Phone number is already taken");
+        }
+        
+        
+        return ValidateResult.Valid();
+    }
+    
+    public static async Task<ValidateResult> ValidateData(this UpdateUserRequestContract contract, IUserRepository userRepository)
+    {
+        if(string.IsNullOrWhiteSpace(contract.UserName))
+        {
+            return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect Username");
+        }
+
+        if (await userRepository.ExistByUserName(contract.UserName.ToLower()))
+        {
+            return  ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Username is already taken");
+        }
+
+        if(!IsValidEmail(contract.Email))
+        {
+            return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect Email");
+        }
+        
+        if (await userRepository.ExistByEmail(contract.Email!.ToLower()))
+        {
+            return ValidateResult.Invalid(HttpStatusCode.Conflict, $"Email is already taken");
+        }
+
+        if (!IsValidPhoneNumber(contract.PhoneNumber))
+        {
+            return ValidateResult.Invalid(HttpStatusCode.BadRequest, $"Incorrect phone number");
+        }
+        
+        if (await userRepository.ExistByPhoneNumber(contract.PhoneNumber))
         {
             return ValidateResult.Invalid(HttpStatusCode.Conflict, $"Phone number is already taken");
         }

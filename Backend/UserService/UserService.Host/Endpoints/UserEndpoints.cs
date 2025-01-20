@@ -24,11 +24,10 @@ public static class UserEndpoints
         return webApplication;
     }
 
-    private static async Task<IResult> AddUserAsync(AddUserRequestContract contract, CancellationToken cancellationToken, IUserRepository repository, HttpContext httpContext)
+    private static async Task<IResult> AddUserAsync(AddUserRequestContract contract,
+        CancellationToken cancellationToken, IUserRepository repository, HttpContext httpContext)
     {
-        var user = contract.ToModel();
-
-        var validateResult = await user.ValidateUserData(repository);
+        var validateResult = await contract.ValidateData(repository);
 
         if (!validateResult.IsValid)
         {
@@ -37,13 +36,13 @@ public static class UserEndpoints
                 case HttpStatusCode.BadRequest:
                     return Results.BadRequest
                         (new Response((int)HttpStatusCode.BadRequest, validateResult.Message));
-                    break;
                 case HttpStatusCode.Conflict:
                     return Results.Conflict
                         (new Response((int)HttpStatusCode.Conflict, validateResult.Message));
-                    break;
             }
         }
+        
+        var user = contract.ToModel();
         
         await repository.AddUserAsync(user, cancellationToken);
 
@@ -78,6 +77,21 @@ public static class UserEndpoints
     private static async Task<IResult> UpdateUserByIdAsync(Guid userId, UpdateUserRequestContract contract, CancellationToken cancellationToken,
         IUserRepository repository)
     {
+        var validateResult = await contract.ValidateData(repository);
+        
+        if (!validateResult.IsValid)
+        {
+            switch (validateResult.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return Results.BadRequest
+                        (new Response((int)HttpStatusCode.BadRequest, validateResult.Message));
+                case HttpStatusCode.Conflict:
+                    return Results.Conflict
+                        (new Response((int)HttpStatusCode.Conflict, validateResult.Message));
+            }
+        }
+        
         var user = contract.ToModel();
         
         var result = await repository.UpdateUserByIdAsync(userId, user, cancellationToken);
