@@ -10,6 +10,13 @@ namespace UserService.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Добавление бизнес логики
+    /// </summary>
+    /// <param name="serviceCollection"><see cref="ServiceCollection"/></param>
+    /// <param name="connectionStringDb">Строка подключения к БД</param>
+    /// <param name="connectionStringRedis">Строка подключения к Redis</param>
+    /// <returns>Модифицированный <see cref="ServiceCollection"/></returns>
     public static IServiceCollection AddBusinessLogic(this IServiceCollection serviceCollection, string connectionStringDb, string connectionStringRedis)
     {
         serviceCollection.AddServices();
@@ -19,6 +26,12 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
 
+    /// <summary>
+    /// Добавление базы данных
+    /// </summary>
+    /// <param name="serviceCollection"><see cref="ServiceCollection"/></param>
+    /// <param name="connectionString">Строка подключения</param>
+    /// <returns>Модифицированный <see cref="ServiceCollection"/></returns>
     private static IServiceCollection AddDataBase(this IServiceCollection serviceCollection, string connectionString)
     {
         serviceCollection.AddDbContext<ApplicationDbContext>(options =>
@@ -31,6 +44,12 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
 
+    /// <summary>
+    /// Добавление Redis
+    /// </summary>
+    /// <param name="serviceCollection"><see cref="ServiceCollection"/></param>
+    /// <param name="connectionString">Строка подключения</param>
+    /// <returns>Модифицированный <see cref="ServiceCollection"/></returns>
     private static IServiceCollection AddRedis(this IServiceCollection serviceCollection, string connectionString)
     {
         serviceCollection.AddStackExchangeRedisCache(options =>
@@ -41,7 +60,12 @@ public static class ServiceCollectionExtensions
 
         return serviceCollection;
     }
-
+    
+    /// <summary>
+    /// Добавление сервисов
+    /// </summary>
+    /// <param name="serviceCollection"><see cref="ServiceCollection"/></param>
+    /// <returns>Модифицированный <see cref="ServiceCollection"/></returns>
     private static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<IUserRepository, UserRepository>();

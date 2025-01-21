@@ -1,4 +1,8 @@
-﻿namespace UserService.Domain;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Caching.Distributed;
+
+namespace UserService.Domain;
 
 public static class Constants
 {
@@ -20,4 +24,22 @@ public static class Constants
     /// Строка подключения к Redis для Production
     /// </summary>
     public static readonly string ConnectionStringRedisEnvironment = "CONNECTION_STRING_REDIS_USER_SERVICE";
+    /// <summary>
+    /// Настройка сериализации JSON
+    /// </summary>
+    public static readonly JsonSerializerOptions? JsonSerializerOptions = new()
+    {
+        ReferenceHandler = ReferenceHandler.Preserve,
+        WriteIndented = true
+    };
+    /// <summary>
+    /// Настройка кэша
+    /// </summary>
+    public static readonly DistributedCacheEntryOptions DistributedCacheEntryOptions = new()
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2),
+        
+    };
+
+
 }
