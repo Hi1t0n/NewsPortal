@@ -1,6 +1,7 @@
 using UserService.Domain;
 using UserService.Host.Endpoints;
 using UserService.Host.Extensions;
+using UserService.Host.Middlewares;
 using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ if (builder.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+
+app.UseExceptionMiddleware();
 
 app.AddUserEndpoints();
 
