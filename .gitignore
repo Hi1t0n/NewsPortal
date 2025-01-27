@@ -1,6 +1,6 @@
 /.git
 /.idea
-/Backen/Userservice/logs
+/Backend/UserService/logs
 /Backend/UserService/.idea
 /Backend/UserService/obj
 /Backend/UserService/UserService.Domain/bin
