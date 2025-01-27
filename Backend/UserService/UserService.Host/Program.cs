@@ -1,3 +1,4 @@
+using Serilog;
 using UserService.Domain;
 using UserService.Host.Endpoints;
 using UserService.Host.Extensions;
@@ -5,6 +6,8 @@ using UserService.Host.Middlewares;
 using UserService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 string connectionStringPostgreSql = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString(Constants.ConnectionStringDbConfiguration)!
@@ -29,6 +32,7 @@ if (builder.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
     });
+    app.UseSerilogRequestLogging();
 }
 
 app.UseExceptionMiddleware();

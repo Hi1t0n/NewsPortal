@@ -1,11 +1,12 @@
 /.git
 /.idea
+/Backen/Userservice/logs
 /Backend/UserService/.idea
 /Backend/UserService/obj
-/Backend/NewsService/.idea
 /Backend/UserService/UserService.Domain/bin
 /Backend/UserService/UserService.Domain/obj
 /Backend/UserService/UserService.Host/bin
 /Backend/UserService/UserService.Host/obj
 /Backend/UserService/UserService.Infrastructure/bin
 /Backend/UserService/UserService.Infrastructure/obj
+/Backend/NewsService/.idea

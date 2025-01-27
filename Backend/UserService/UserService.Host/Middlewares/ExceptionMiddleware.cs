@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using UserService.Domain.Contacts;
 
 namespace UserService.Host.Middlewares;
@@ -16,27 +17,37 @@ public class ExceptionMiddleware(RequestDelegate next)
         }
         catch (Exception exception) when (exception is TaskCanceledException || exception is TimeoutException)
         {
-            await ModifyHeader(context, new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Title = "Request Timeout",
                 Detail = exception.Message,
                 Status = StatusCodes.Status408RequestTimeout
-            });
+            };
+
+            Log.Error("Exception: {Title} - {Detail}", problemDetails.Title, problemDetails.Detail);
+
+            await ModifyHeader(context, problemDetails);
         }
         catch (Exception exception)
         {
-            await ModifyHeader(context, new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Title = "Servet Internal Error",
                 Detail = exception.Message,
                 Status = StatusCodes.Status500InternalServerError
-            });
+            };
+
+            Log.Error("Exception: {Title} - {Detail} - {Status}", problemDetails.Title, problemDetails.Detail,
+                problemDetails.Status);
+            
+            await ModifyHeader(context, problemDetails);
         }
     }
 
     private static async Task ModifyHeader(HttpContext context, ProblemDetails problemDetails)
     {
         context.Response.ContentType = "application/json";
+        context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
         await context.Response.WriteAsJsonAsync(problemDetails, CancellationToken.None);
     }
 }
