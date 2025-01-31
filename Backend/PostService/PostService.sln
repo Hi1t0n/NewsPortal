@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Host", "PostService.Host\PostService.Host.csproj", "{55F9EB6E-1851-49DD-9E59-7C06A40818F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Domain", "PostService.Domain\PostService.Domain.csproj", "{00953E7A-6301-452C-9919-90CA46F8F588}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostService.Infrastructure", "PostService.Infrastructure\PostService.Infrastructure.csproj", "{28FDAF49-883B-475D-895A-AF635BE32606}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55F9EB6E-1851-49DD-9E59-7C06A40818F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F9EB6E-1851-49DD-9E59-7C06A40818F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F9EB6E-1851-49DD-9E59-7C06A40818F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F9EB6E-1851-49DD-9E59-7C06A40818F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00953E7A-6301-452C-9919-90CA46F8F588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00953E7A-6301-452C-9919-90CA46F8F588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00953E7A-6301-452C-9919-90CA46F8F588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00953E7A-6301-452C-9919-90CA46F8F588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28FDAF49-883B-475D-895A-AF635BE32606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28FDAF49-883B-475D-895A-AF635BE32606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28FDAF49-883B-475D-895A-AF635BE32606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28FDAF49-883B-475D-895A-AF635BE32606}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -9,4 +9,12 @@
 /Backend/UserService/UserService.Host/obj
 /Backend/UserService/UserService.Infrastructure/bin
 /Backend/UserService/UserService.Infrastructure/obj
-/Backend/NewsService/.idea
+/Backend/PostService/logs
+/Backend/PostService/.idea
+/Backend/PostService/obj
+/Backend/PostService/PostService.Domain/bin
+/Backend/PostService/PostService.Domain/obj
+/Backend/PostService/PostService.Host/bin
+/Backend/PostService/PostService.Host/obj
+/Backend/PostService/PostService.Infrastructure/bin
+/Backend/PostService/PostService.Infrastructure/obj
